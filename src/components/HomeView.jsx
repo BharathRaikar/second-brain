@@ -1,10 +1,13 @@
 import React from 'react'
 import { SECTIONS } from '../sections.js'
+import SectionPreviewCard from './SectionPreviewCard.jsx'
 
 export default function HomeView({ itemsBySection, onNavigate }) {
   const allItems = Object.values(itemsBySection).flat()
-  const openCount = allItems.filter((i) => i.status !== 'Done').length
+  const totalCount = allItems.length
+  const doneCount = allItems.filter((i) => i.status === 'Done').length
   const blockedCount = allItems.filter((i) => i.status === 'Blocked').length
+  const progressPct = totalCount ? Math.round((doneCount / totalCount) * 100) : 0
 
   return (
     <div className="section-view">
@@ -14,37 +17,35 @@ export default function HomeView({ itemsBySection, onNavigate }) {
       </div>
 
       <div className="stat-grid">
-        <div className="stat-card">
-          <p className="stat-label">Open items</p>
-          <p className="stat-value">{openCount}</p>
+        <div className="stat-card stat-card-ring">
+          <div
+            className="progress-ring"
+            style={{ background: `conic-gradient(var(--accent) 0% ${progressPct}%, var(--border) ${progressPct}% 100%)` }}
+          >
+            <div className="progress-ring-inner">
+              <span className="progress-ring-value">{progressPct}%</span>
+            </div>
+          </div>
+          <div>
+            <p className="stat-label">Progress</p>
+            <p className="stat-sublabel">{doneCount} of {totalCount} done</p>
+          </div>
         </div>
-        <div className="stat-card">
+        <div className="stat-card stat-card-danger">
           <p className="stat-label">Blocked</p>
           <p className="stat-value">{blockedCount}</p>
         </div>
       </div>
 
       <div className="section-preview-list">
-        {SECTIONS.map((section) => {
-          const items = itemsBySection[section.key] || []
-          const open = items.filter((i) => i.status !== 'Done')
-          return (
-            <button
-              key={section.key}
-              className="section-preview-card"
-              onClick={() => onNavigate(section.key)}
-            >
-              <div className={`preview-icon ${section.color}`}>
-                <i className={`ti ${section.icon}`} aria-hidden="true" />
-              </div>
-              <div className="preview-body">
-                <p className="preview-title">{section.label}</p>
-                <p className="preview-subtitle">{section.subtitle}</p>
-              </div>
-              <span className="preview-count">{open.length}</span>
-            </button>
-          )
-        })}
+        {SECTIONS.map((section) => (
+          <SectionPreviewCard
+            key={section.key}
+            section={section}
+            items={itemsBySection[section.key] || []}
+            onNavigate={onNavigate}
+          />
+        ))}
       </div>
     </div>
   )

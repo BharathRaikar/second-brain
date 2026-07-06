@@ -1,4 +1,5 @@
 import React from 'react'
+import SectionPreviewCard from './SectionPreviewCard.jsx'
 
 export default function MoreView({ sections, itemsBySection, onNavigate }) {
   return (
@@ -8,26 +9,14 @@ export default function MoreView({ sections, itemsBySection, onNavigate }) {
         <p className="section-subtitle">Everything else</p>
       </div>
       <div className="section-preview-list">
-        {sections.map((section) => {
-          const items = itemsBySection[section.key] || []
-          const open = items.filter((i) => i.status !== 'Done')
-          return (
-            <button
-              key={section.key}
-              className="section-preview-card"
-              onClick={() => onNavigate(section.key)}
-            >
-              <div className={`preview-icon ${section.color}`}>
-                <i className={`ti ${section.icon}`} aria-hidden="true" />
-              </div>
-              <div className="preview-body">
-                <p className="preview-title">{section.label}</p>
-                <p className="preview-subtitle">{section.subtitle}</p>
-              </div>
-              <span className="preview-count">{open.length}</span>
-            </button>
-          )
-        })}
+        {sections.map((section) => (
+          <SectionPreviewCard
+            key={section.key}
+            section={section}
+            items={itemsBySection[section.key] || []}
+            onNavigate={onNavigate}
+          />
+        ))}
       </div>
     </div>
   )
