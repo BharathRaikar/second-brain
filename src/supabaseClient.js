@@ -1,0 +1,13 @@
+import { createClient } from '@supabase/supabase-js'
+
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
+
+if (!supabaseUrl || !supabaseAnonKey) {
+  console.warn(
+    'Supabase env vars are missing. Set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY ' +
+    'in a .env file locally, and as repo secrets for the GitHub Actions build.'
+  )
+}
+
+export const supabase = createClient(supabaseUrl || '', supabaseAnonKey || '')
