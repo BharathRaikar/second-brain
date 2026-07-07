@@ -1,8 +1,9 @@
 import React from 'react'
 import ItemCard from './ItemCard.jsx'
 import QuickAdd from './QuickAdd.jsx'
+import SectionNotes from './SectionNotes.jsx'
 
-export default function SectionView({ section, items, loading, onAdd, onCycleStatus, onDelete }) {
+export default function SectionView({ section, items, notes, loading, onAdd, onCycleStatus, onDelete, onSaveNote }) {
   const openItems = items.filter((i) => i.status !== 'Completed')
   const doneItems = items.filter((i) => i.status === 'Completed')
 
@@ -38,6 +39,8 @@ export default function SectionView({ section, items, loading, onAdd, onCycleSta
           )}
         </>
       )}
+
+      <SectionNotes sectionKey={section.key} content={notes} onSave={onSaveNote} />
     </div>
   )
 }

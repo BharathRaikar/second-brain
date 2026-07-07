@@ -12,6 +12,7 @@ const MORE_SECTIONS = SECTIONS.filter((s) => !MAIN_NAV_KEYS.includes(s.key))
 export default function App() {
   const [active, setActive] = useState('home')
   const [itemsBySection, setItemsBySection] = useState({})
+  const [notesBySection, setNotesBySection] = useState({})
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
 
@@ -39,9 +40,18 @@ export default function App() {
     setLoading(false)
   }, [])
 
+  const loadNotes = useCallback(async () => {
+    const { data, error } = await supabase.from('section_notes').select('*')
+    if (error) return
+    const byKey = {}
+    for (const row of data || []) byKey[row.section] = row.content
+    setNotesBySection(byKey)
+  }, [])
+
   useEffect(() => {
     loadItems()
-  }, [loadItems])
+    loadNotes()
+  }, [loadItems, loadNotes])
 
   async function handleAdd(sectionKey, { title, status }) {
     const optimisticId = `temp-${Date.now()}`
@@ -86,6 +96,15 @@ export default function App() {
     if (error) setError(error.message)
   }
 
+  async function handleSaveNote(sectionKey, content) {
+    setNotesBySection((prev) => ({ ...prev, [sectionKey]: content }))
+    const { error } = await supabase
+      .from('section_notes')
+      .upsert({ section: sectionKey, content, updated_at: new Date().toISOString() })
+
+    if (error) setError(error.message)
+  }
+
   async function handleDelete(item) {
     setItemsBySection((prev) => ({
       ...prev,
@@ -115,10 +134,12 @@ export default function App() {
       <SectionView
         section={section}
         items={itemsBySection[section.key] || []}
+        notes={notesBySection[section.key] || ''}
         loading={loading}
         onAdd={(payload) => handleAdd(section.key, payload)}
         onCycleStatus={handleCycleStatus}
         onDelete={handleDelete}
+        onSaveNote={(content) => handleSaveNote(section.key, content)}
       />
     )
   }
