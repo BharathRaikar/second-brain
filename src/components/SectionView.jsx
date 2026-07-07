@@ -8,7 +8,7 @@ export default function SectionView({ section, items, notes, loading, onAdd, onC
   const doneItems = items.filter((i) => i.status === 'Completed')
 
   return (
-    <div className="section-view">
+    <div className="section-view section-detail">
       <div className="section-header">
         <p className="section-title">{section.label}</p>
         <p className="section-subtitle">{section.subtitle}</p>

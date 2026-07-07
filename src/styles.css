@@ -40,8 +40,26 @@ body {
   flex-direction: column;
 }
 
+.app-shell:has(.section-detail) {
+  min-height: 100vh;
+}
+
 .app-screen {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
   padding: 1.5rem 1.25rem 1rem;
+}
+
+.app-shell:has(.section-detail) .app-screen {
+  flex: 1;
+}
+
+.section-detail {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  flex: 1;
 }
 
 .error-banner {
@@ -235,11 +253,16 @@ body {
 }
 
 .notes-box {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
   margin-top: 1.5rem;
 }
 
 .notes-textarea {
   width: 100%;
+  flex: 1;
   min-height: 140px;
   background: var(--surface-1);
   border: 0.5px solid var(--border);
@@ -369,6 +392,10 @@ body {
     max-width: 760px;
     flex-direction: row;
     align-items: flex-start;
+  }
+
+  .app-shell:has(.section-detail) {
+    align-items: stretch;
   }
 
   .app-screen {
