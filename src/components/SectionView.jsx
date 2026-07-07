@@ -2,9 +2,9 @@ import React from 'react'
 import ItemCard from './ItemCard.jsx'
 import QuickAdd from './QuickAdd.jsx'
 
-export default function SectionView({ section, items, loading, onAdd, onToggleDone, onDelete }) {
-  const openItems = items.filter((i) => i.status !== 'Done')
-  const doneItems = items.filter((i) => i.status === 'Done')
+export default function SectionView({ section, items, loading, onAdd, onCycleStatus, onDelete }) {
+  const openItems = items.filter((i) => i.status !== 'Completed')
+  const doneItems = items.filter((i) => i.status === 'Completed')
 
   return (
     <div className="section-view">
@@ -23,15 +23,15 @@ export default function SectionView({ section, items, loading, onAdd, onToggleDo
         <>
           <div className="item-list">
             {openItems.map((item) => (
-              <ItemCard key={item.id} item={item} onToggleDone={onToggleDone} onDelete={onDelete} />
+              <ItemCard key={item.id} item={item} onCycleStatus={onCycleStatus} onDelete={onDelete} />
             ))}
           </div>
           {doneItems.length > 0 && (
             <>
-              <p className="list-divider">Done</p>
+              <p className="list-divider">Completed</p>
               <div className="item-list">
                 {doneItems.map((item) => (
-                  <ItemCard key={item.id} item={item} onToggleDone={onToggleDone} onDelete={onDelete} />
+                  <ItemCard key={item.id} item={item} onCycleStatus={onCycleStatus} onDelete={onDelete} />
                 ))}
               </div>
             </>

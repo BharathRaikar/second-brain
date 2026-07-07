@@ -23,7 +23,7 @@
 * { box-sizing: border-box; }
 
 html, body, #root {
-  height: 100%;
+  min-height: 100%;
   margin: 0;
 }
 
@@ -37,14 +37,12 @@ body {
 .app-shell {
   max-width: 480px;
   margin: 0 auto;
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
 }
 
 .app-screen {
-  flex: 1;
-  overflow-y: auto;
   padding: 1.5rem 1.25rem 1rem;
 }
 
@@ -77,8 +75,8 @@ body {
 
 .stat-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
   margin-bottom: 1.5rem;
 }
 
@@ -86,71 +84,26 @@ body {
   background: var(--surface-1);
   border: 0.5px solid var(--border);
   border-radius: 12px;
-  padding: 0.9rem 1rem;
+  padding: 0.75rem 0.15rem 0.75rem 0.85rem;
 }
 
 .stat-label {
-  font-size: 12px;
+  font-size: 11px;
   color: var(--text-secondary);
   margin: 0 0 4px;
   font-family: 'IBM Plex Mono', monospace;
   text-transform: uppercase;
   letter-spacing: 0.04em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .stat-value {
-  font-size: 26px;
+  font-size: 22px;
   font-weight: 600;
   margin: 0;
   font-family: 'IBM Plex Mono', monospace;
-}
-
-.stat-sublabel {
-  font-size: 11px;
-  color: var(--text-secondary);
-  margin: 2px 0 0;
-}
-
-.stat-card-ring {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.stat-card-danger {
-  background: var(--danger-bg);
-  border-color: transparent;
-}
-
-.stat-card-danger .stat-label { color: var(--danger); }
-.stat-card-danger .stat-value { color: #e0805a; }
-
-.progress-ring {
-  position: relative;
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  flex-shrink: 0;
-}
-
-.progress-ring-inner {
-  position: absolute;
-  top: 4px;
-  left: 4px;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: var(--surface-1);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.progress-ring-value {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--text-primary);
 }
 
 .quick-add {
@@ -210,16 +163,6 @@ body {
   padding: 0.7rem 0.85rem;
 }
 
-.item-check {
-  background: none;
-  border: none;
-  color: var(--text-muted);
-  font-size: 18px;
-  cursor: pointer;
-  flex-shrink: 0;
-  display: flex;
-}
-
 .item-body {
   flex: 1;
   min-width: 0;
@@ -259,6 +202,8 @@ body {
 }
 
 .badge {
+  border: none;
+  cursor: pointer;
   font-size: 11px;
   font-weight: 600;
   font-family: 'IBM Plex Mono', monospace;
@@ -269,10 +214,13 @@ body {
   flex-shrink: 0;
 }
 
+.badge:active { transform: scale(0.96); }
+
 .badge-neutral { background: var(--neutral-bg); color: var(--neutral); }
 .badge-warning { background: var(--warning-bg); color: var(--warning); }
 .badge-danger  { background: var(--danger-bg);  color: var(--danger); }
 .badge-success { background: var(--success-bg); color: var(--success); }
+.badge-accent  { background: var(--accent-bg);  color: var(--accent); }
 
 .list-divider {
   font-size: 12px;
@@ -361,6 +309,8 @@ body {
 
 .bottom-nav {
   display: flex;
+  position: sticky;
+  bottom: 0;
   border-top: 0.5px solid var(--border);
   background: var(--surface-2);
   padding: 8px 4px calc(8px + env(safe-area-inset-bottom));
@@ -387,4 +337,48 @@ body {
 
 .nav-item-active {
   color: var(--accent);
+}
+
+@media (min-width: 720px) {
+  .app-shell {
+    max-width: 760px;
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
+  .app-screen {
+    flex: 1;
+    min-width: 0;
+    padding: 2rem 2.5rem;
+  }
+
+  .bottom-nav {
+    order: -1;
+    position: sticky;
+    top: 0;
+    bottom: auto;
+    flex-direction: column;
+    justify-content: flex-start;
+    width: 180px;
+    flex-shrink: 0;
+    height: 100vh;
+    gap: 4px;
+    border-top: none;
+    border-right: 0.5px solid var(--border);
+    padding: 1.5rem 0.75rem;
+  }
+
+  .nav-item {
+    flex: none;
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    font-size: 13px;
+  }
+
+  .nav-item i {
+    font-size: 18px;
+  }
 }

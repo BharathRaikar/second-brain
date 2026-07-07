@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react'
 import { supabase } from './supabaseClient.js'
-import { SECTIONS } from './sections.js'
+import { SECTIONS, STATUS_OPTIONS } from './sections.js'
 import BottomNav from './components/BottomNav.jsx'
 import HomeView from './components/HomeView.jsx'
 import SectionView from './components/SectionView.jsx'
@@ -68,8 +68,9 @@ export default function App() {
     }))
   }
 
-  async function handleToggleDone(item) {
-    const nextStatus = item.status === 'Done' ? 'In progress' : 'Done'
+  async function handleCycleStatus(item) {
+    const currentIndex = STATUS_OPTIONS.indexOf(item.status)
+    const nextStatus = STATUS_OPTIONS[(currentIndex + 1) % STATUS_OPTIONS.length]
     setItemsBySection((prev) => ({
       ...prev,
       [item.section]: prev[item.section].map((i) =>
@@ -116,7 +117,7 @@ export default function App() {
         items={itemsBySection[section.key] || []}
         loading={loading}
         onAdd={(payload) => handleAdd(section.key, payload)}
-        onToggleDone={handleToggleDone}
+        onCycleStatus={handleCycleStatus}
         onDelete={handleDelete}
       />
     )

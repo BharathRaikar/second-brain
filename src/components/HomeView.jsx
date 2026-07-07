@@ -4,10 +4,15 @@ import SectionPreviewCard from './SectionPreviewCard.jsx'
 
 export default function HomeView({ itemsBySection, onNavigate }) {
   const allItems = Object.values(itemsBySection).flat()
-  const totalCount = allItems.length
-  const doneCount = allItems.filter((i) => i.status === 'Done').length
-  const blockedCount = allItems.filter((i) => i.status === 'Blocked').length
-  const progressPct = totalCount ? Math.round((doneCount / totalCount) * 100) : 0
+  const countByStatus = (status) => allItems.filter((i) => i.status === status).length
+
+  const stats = [
+    { label: 'Open', value: countByStatus('Open') },
+    { label: 'In progress', value: countByStatus('In progress') },
+    { label: 'Blocked', value: countByStatus('Blocked') },
+    { label: 'Completed', value: countByStatus('Completed') },
+    { label: 'Total', value: allItems.length },
+  ]
 
   return (
     <div className="section-view">
@@ -17,24 +22,12 @@ export default function HomeView({ itemsBySection, onNavigate }) {
       </div>
 
       <div className="stat-grid">
-        <div className="stat-card stat-card-ring">
-          <div
-            className="progress-ring"
-            style={{ background: `conic-gradient(var(--accent) 0% ${progressPct}%, var(--border) ${progressPct}% 100%)` }}
-          >
-            <div className="progress-ring-inner">
-              <span className="progress-ring-value">{progressPct}%</span>
-            </div>
+        {stats.map((stat) => (
+          <div className="stat-card" key={stat.label}>
+            <p className="stat-label">{stat.label}</p>
+            <p className="stat-value">{stat.value}</p>
           </div>
-          <div>
-            <p className="stat-label">Progress</p>
-            <p className="stat-sublabel">{doneCount} of {totalCount} done</p>
-          </div>
-        </div>
-        <div className="stat-card stat-card-danger">
-          <p className="stat-label">Blocked</p>
-          <p className="stat-value">{blockedCount}</p>
-        </div>
+        ))}
       </div>
 
       <div className="section-preview-list">

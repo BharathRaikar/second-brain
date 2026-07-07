@@ -1,7 +1,7 @@
 import React from 'react'
 
 export default function SectionPreviewCard({ section, items, onNavigate }) {
-  const open = items.filter((i) => i.status !== 'Done')
+  const open = items.filter((i) => i.status !== 'Completed')
   return (
     <button className="section-preview-card" onClick={() => onNavigate(section.key)}>
       <span className={`preview-bar ${section.color}`} aria-hidden="true" />

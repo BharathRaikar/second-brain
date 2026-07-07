@@ -16,11 +16,12 @@ export const SECTIONS = [
     subtitle: 'Budget and trading' },
 ]
 
-export const STATUS_OPTIONS = ['Backlog', 'In progress', 'Blocked', 'Done']
+export const STATUS_OPTIONS = ['Open', 'In progress', 'On going', 'Blocked', 'Completed']
 
 export const STATUS_COLOR = {
-  'Backlog': 'neutral',
+  'Open': 'neutral',
   'In progress': 'warning',
+  'On going': 'accent',
   'Blocked': 'danger',
-  'Done': 'success',
+  'Completed': 'success',
 }
